@@ -20,11 +20,19 @@ namespace BreatheApp.Controllers
         }
 
         // GET: Usuarios
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string SearchBy)
         {
-              return _context.Usuarios != null ? 
-                          View(await _context.Usuarios.ToListAsync()) :
-                          Problem("Entity set 'BreatheContext.Usuarios'  is null.");
+            if (String.IsNullOrEmpty(SearchBy))
+            {
+                return _context.Usuarios != null ?
+                    View(await _context.Usuarios.ToListAsync()) :
+                    Problem("Entity set 'BreatheContext.Doencas'  is null.");
+            }
+            else
+            {
+                var searchIteams = await _context.Usuarios.Where(d => d.Nome.Contains(SearchBy)).ToListAsync();
+                return View(searchIteams);
+            }
         }
 
         // GET: Usuarios/Details/5
@@ -56,9 +64,9 @@ namespace BreatheApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UsuarioId,Nome,Email,Senha")] Usuario usuario)
+        public async Task<IActionResult> Create([Bind("UsuarioId,Nome,Sobrenome,Email,Senha")] Usuario usuario)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 _context.Add(usuario);
                 await _context.SaveChangesAsync();
@@ -88,14 +96,14 @@ namespace BreatheApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UsuarioId,Nome,Email,Senha")] Usuario usuario)
+        public async Task<IActionResult> Edit(int id, [Bind("UsuarioId,Nome,Sobrenome,Email,Senha")] Usuario usuario)
         {
             if (id != usuario.UsuarioId)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 try
                 {

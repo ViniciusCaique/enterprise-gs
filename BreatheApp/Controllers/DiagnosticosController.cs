@@ -49,8 +49,8 @@ namespace BreatheApp.Controllers
         // GET: Diagnosticos/Create
         public IActionResult Create()
         {
-            ViewData["DoencaId"] = new SelectList(_context.Doencas, "DoencaId", "Descricao");
-            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "UsuarioId", "Email");
+            ViewData["DoencaId"] = new SelectList(_context.Doencas, "DoencaId", "Nome");
+            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "UsuarioId", "Nome");
             return View();
         }
 
@@ -59,16 +59,16 @@ namespace BreatheApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DiagnosticoId,UsuarioId,DoencaId")] Diagnostico diagnostico)
+        public async Task<IActionResult> Create([Bind("DiagnosticoId,Descricao,UsuarioId,DoencaId")] Diagnostico diagnostico)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 _context.Add(diagnostico);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DoencaId"] = new SelectList(_context.Doencas, "DoencaId", "Descricao", diagnostico.DoencaId);
-            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "UsuarioId", "Email", diagnostico.UsuarioId);
+            ViewData["DoencaId"] = new SelectList(_context.Doencas, "DoencaId", "Nome", diagnostico.DoencaId);
+            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "UsuarioId", "Nome", diagnostico.UsuarioId);
             return View(diagnostico);
         }
 
@@ -85,8 +85,8 @@ namespace BreatheApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["DoencaId"] = new SelectList(_context.Doencas, "DoencaId", "Descricao", diagnostico.DoencaId);
-            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "UsuarioId", "Email", diagnostico.UsuarioId);
+            ViewData["DoencaId"] = new SelectList(_context.Doencas, "DoencaId", "Nome", diagnostico.DoencaId);
+            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "UsuarioId", "Nome", diagnostico.UsuarioId);
             return View(diagnostico);
         }
 
@@ -95,14 +95,14 @@ namespace BreatheApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("DiagnosticoId,UsuarioId,DoencaId")] Diagnostico diagnostico)
+        public async Task<IActionResult> Edit(int id, [Bind("DiagnosticoId,Descricao,UsuarioId,DoencaId")] Diagnostico diagnostico)
         {
             if (id != diagnostico.DiagnosticoId)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 try
                 {
@@ -122,8 +122,8 @@ namespace BreatheApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DoencaId"] = new SelectList(_context.Doencas, "DoencaId", "Descricao", diagnostico.DoencaId);
-            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "UsuarioId", "Email", diagnostico.UsuarioId);
+            ViewData["DoencaId"] = new SelectList(_context.Doencas, "DoencaId", "Nome", diagnostico.DoencaId);
+            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "UsuarioId", "Nome", diagnostico.UsuarioId);
             return View(diagnostico);
         }
 

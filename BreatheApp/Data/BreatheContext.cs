@@ -17,5 +17,7 @@ namespace BreatheApp.Data
             modelBuilder.Entity<Diagnostico>().ToTable("Diagnostico");
             modelBuilder.Entity<Usuario>().ToTable("Usuario");
         }
+
+        public DbSet<BreatheApp.Models.Endereco> Endereco { get; set; } = default!;
     }
 }
